@@ -4,8 +4,8 @@ git clone https://github.com/gm2-it/test-beam-slac-jun16.git
 cd test-beam-slac-jun16/NapoliDaq/analyzer
 make clean
 make
-./ana <root file produced by Napoli DAQ cruncher>
-will produce plots
+# produce plots using .root files produced with cruncher
+./NaDaqAnaApp <file1.root> [<file2>.root ...]
 
 based on
 
