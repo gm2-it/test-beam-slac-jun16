@@ -12,6 +12,8 @@ void NaDaqAna::Loop(string const &filename) {
   
   // nentries = fChain->GetEntriesFast();
   nentries = fChain->GetEntries();
+  cout << "files contain " << nentries << " entries" << endl;
+  
   initialize(filename);
 
   Int_t nbytes = 0, nb = 0;
@@ -66,7 +68,6 @@ void NaDaqAna::initialize(string const &filename) {
   p2_time = new Double_t[nentries];
 
   cout << "initialize()" << endl;
-  cout << "N. entries: " << nentries << endl;
 }
 
 void NaDaqAna::execute() {
@@ -301,10 +302,12 @@ void NaDaqAna::finalize(string const &filename) {
     }
   }
 
+  cout << "create  file " << filename << endl;
   TFile *OutF = new TFile(filename.c_str(), "recreate");
   OutF->cd();
   gROOT->GetList()->Write();
   OutF->Close();
+  cout << "written file " << filename << endl;  
   delete OutF;
   useDelete();
 
