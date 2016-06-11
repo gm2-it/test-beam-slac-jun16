@@ -30,7 +30,7 @@ private:
   Double_t *pmt_Fired;
   Double_t *p1_Fired;
   Double_t *p2_Fired;
-  
+
   Double_t *pmt_adcval;
   Double_t *p1_adcval;
   Double_t *p2_adcval;
@@ -69,7 +69,7 @@ private:
   TProfile *prof_pin1_adcval;
   TProfile *prof_pin2_adcval;
   TProfile *prof_pin1Dpin2_adcval;
- 
+
   TProfile *prof_pmt_vbias;
   TProfile *prof_pin1_vbias;
   TProfile *prof_pin2_vbias;
@@ -105,6 +105,6 @@ private:
   TH1D *h_pin2_adcval;
 
   TH1D *h1_pin1Dpin2_adcval;
-  
+
 };
 #endif
