@@ -23,7 +23,9 @@ class NaDaqAna : public EventCollection {
 
 private:
   Long64_t nentries;
-  Int_t iter;
+  Int_t pmt_iter;
+  Int_t p1_iter;
+  Int_t p2_iter;
 
   Double_t *pmt_Fired;
   Double_t *p1_Fired;
@@ -103,6 +105,6 @@ private:
   TH1D *h_pin2_adcval;
 
   TH1D *h1_pin1Dpin2_adcval;
-   
+  
 };
 #endif
