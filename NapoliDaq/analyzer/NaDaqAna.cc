@@ -124,9 +124,14 @@ void NaDaqAna::execute() {
 void NaDaqAna::finalize(string const &filename) {
 
   //histograms for LM analysis
-  Double_t t_pmt = TMath::MaxElement(iter, pmt_time) +1;
-  Double_t t_p1 = TMath::MaxElement(iter, p1_time) +1;
-  Double_t t_p2 = TMath::MaxElement(iter, p2_time) +1;
+  Double_t max_pmt_time = TMath::MaxElement(iter, pmt_time) +1;
+  Double_t max_p1_time = TMath::MaxElement(iter, p1_time) +1;
+  Double_t max_p2_time = TMath::MaxElement(iter, p2_time) +1;
+
+  //--- n. of hours in 3-19 June
+  max_pmt_time = 24*(15-3+1);
+  max_p1_time = 24*(15-3+1);
+  max_p2_time = 24*(15-3+1);  
 
   Double_t nbof_max_pmt = TMath::MaxElement(iter, pmt_nbof);
   Double_t nbof_max_p1 = TMath::MaxElement(iter, p1_nbof);
@@ -143,102 +148,120 @@ void NaDaqAna::finalize(string const &filename) {
   Int_t nbins=2;
   
   TString title;
+
+  title = "Laser PMT value vs. time";
+  prof_pmt_ls_adcval = new TProfile("prof_pmt_laser_adcval", title, max_pmt_time*4, 0, max_pmt_time);
+  prof_pmt_ls_adcval->SetStats(0);
   
-  title = "Time profile for pmt: laser ADC Value file";
-  prof_pmt_ls_adcval = new TProfile("prof_pmt_ls_adcval", title, t_pmt/nbins, 0, t_pmt);
+  title = "Am PMT value vs. time";
+  prof_pmt_am_adcval = new TProfile("prof_pmt_am_adcval", title, max_pmt_time*4, 0, max_pmt_time);
+  prof_pmt_am_adcval->SetStats(0);
+  
+  title = "Laser PMT peak time vs. time";
+  h2_pmt_nbof = new TH2D("h2_pmt_nbof", title, 1000, 0, max_pmt_time,  1000, 0, nbof_max_pmt);
+  
+  // title = "Histogram for pmt NTimeTrgBOF Value";
+  // h1_pmt_ntimetrgbof = new TH1D("h1_pmt_ntimetrgbof", title, 1000, 0, ntimetrgbof_max_pmt);
 
-  title = "Time profile for pmt: Americium ADC Value file";
-  prof_pmt_am_adcval = new TProfile("prof_pmt_am_adcval", title, t_pmt/nbins, 0, t_pmt);
+  title = "Laser PMT NTimeTrgBOF vs. time scatter plot";
+  h2_pmt_ntimetrgbof = new TH2D("h2_pmt_ntimetrgbof", title, 2000, 0, max_pmt_time,  1000, 0, ntimetrgbof_max_pmt);
 
-  title = "Time profile for pmt NBOF Value file";
-  h2_pmt_nbof = new TH2D("h2_pmt_nbof", title, 1000, 0, t_pmt,  1000, 0, nbof_max_pmt);
-
-  title = "Histogram for pmt NTimeTrgBOF Value file";
-  h1_pmt_ntimetrgbof = new TH1D("h1_pmt_ntimetrgbof", title, 1000, 0, ntimetrgbof_max_pmt);
-
-  title = "Time profile for pmt NTimeTrgBOF Value file";
-  h2_pmt_ntimetrgbof = new TH2D("h2_pmt_ntimetrgbof", title, 2000, 0, t_pmt,  1000, 0, ntimetrgbof_max_pmt);
-
-  title = "Time profile for pmt Vbias Value file";
-  prof_pmt_vbias = new TProfile("prof_pmt_vbias", title, t_pmt/nbins, 0, t_pmt);
-
-  title = "Time profile for pmt external Temperature Value file";
-  prof_pmt_extemp = new TProfile("prof_pmt_extemp", title, t_pmt/nbins, 0, t_pmt);
-
-  title = "Time profile for pmt board Temperature Value file";
-  prof_pmt_boardtemp = new TProfile("prof_pmt_boardtemp", title, t_pmt/nbins, 0, t_pmt);
-
-  title = "Time profile for pmt csp Temperature Value file";
-  prof_pmt_csptemp = new TProfile("prof_pmt_csptemp", title, t_pmt/nbins, 0, t_pmt);
-
-  title = "Histogram for pmt ADC Value file";
+  title = "PMT V_bias vs. time";
+  prof_pmt_vbias = new TProfile("prof_pmt_vbias", title, max_pmt_time/nbins, 0, max_pmt_time);
+  prof_pmt_vbias->SetStats(0);
+  
+  title = "PMT external temperature vs. time";
+  prof_pmt_extemp = new TProfile("prof_pmt_extemp", title, max_pmt_time/nbins, 0, max_pmt_time);
+  prof_pmt_extemp->SetStats(0);
+  
+  title = "PMT board temperature vs. time";
+  prof_pmt_boardtemp = new TProfile("prof_pmt_boardtemp", title, max_pmt_time/nbins, 0, max_pmt_time);
+  prof_pmt_boardtemp->SetStats(0);
+  
+  title = "PMT preamp temperature vs. time";
+  prof_pmt_csptemp = new TProfile("prof_pmt_csptemp", title, max_pmt_time/nbins, 0, max_pmt_time);
+  prof_pmt_csptemp->SetStats(0);
+  
+  title = "Histogram for pmt ADC Value";
   h_pmt_adcval = new TH1D("h_pmt_adcval", title, 200, 0, 10000);
 
-  title = "Time profile for pin1 ADC Value file";
-  prof_pin1_adcval = new TProfile("prof_pin1_adcval", title, t_p1/nbins, 0, t_p1);
+  title = "Time profile for pin1 ADC Value";
+  prof_pin1_adcval = new TProfile("prof_pin1_adcval", title, max_p1_time/nbins, 0, max_p1_time);
+  prof_pin1_adcval->SetStats(0);
   prof_pin1_adcval->Sumw2();
 
-  title = "Time profile for pin1 NBOF Value file";
-  h2_pin1_nbof = new TH2D("h2_pin1_nbof", title, 1000, 0, t_p1,  1000, 0, nbof_max_p1);
+  title = "Time profile for pin1 NBOF Value";
+  h2_pin1_nbof = new TH2D("h2_pin1_nbof", title, 1000, 0, max_p1_time,  1000, 0, nbof_max_p1);
 
-  title = "Histogram for pin1 NTimeTrgBOF Value file";
+  title = "Histogram for pin1 NTimeTrgBOF Value";
   h1_pin1_ntimetrgbof = new TH1D("h1_pin1_ntimetrgbof", title, 2000, 0, ntimetrgbof_max_p1);
 
-  title = "Time profile for pin1 NTimeTrgBOF Value file";
-  h2_pin1_ntimetrgbof = new TH2D("h2_pin1_ntimetrgbof", title, 1000, 0, t_p1, 1000, 0, ntimetrgbof_max_p1);
+  title = "Time profile for pin1 NTimeTrgBOF Value";
+  h2_pin1_ntimetrgbof = new TH2D("h2_pin1_ntimetrgbof", title, 1000, 0, max_p1_time, 1000, 0, ntimetrgbof_max_p1);
 
-  title = "Time profile for pin1 Vbias Value file";
-  prof_pin1_vbias = new TProfile("prof_pin1_vbias", title, t_p1/nbins, 0, t_p1);
-
-  title = "Time profile for pin1 external Temperature Value file";
-  prof_pin1_extemp = new TProfile("prof_pin1_extemp", title, t_p1/nbins, 0, t_p1);
-
-  title = "Time profile for pin1 board Temperature Value file";
-  prof_pin1_boardtemp = new TProfile("prof_pin1_boardtemp", title, t_p1/nbins, 0, t_p1);
-
-  title = "Time profile for pin1 csp Temperature Value file";
-  prof_pin1_csptemp = new TProfile("prof_pin1_csptemp", title, t_p1/nbins, 0, t_p1);
-
-  title = "Histogram for pin1 ADC Value file";
+  title = "Time profile for pin1 Vbias Value";
+  prof_pin1_vbias = new TProfile("prof_pin1_vbias", title, max_p1_time/nbins, 0, max_p1_time);
+  prof_pin1_vbias->SetStats(0);
+  
+  title = "Time profile for pin1 external Temperature Value";
+  prof_pin1_extemp = new TProfile("prof_pin1_extemp", title, max_p1_time/nbins, 0, max_p1_time);
+  prof_pin1_extemp->SetStats(0);
+  
+  title = "Time profile for pin1 board Temperature Value";
+  prof_pin1_boardtemp = new TProfile("prof_pin1_boardtemp", title, max_p1_time/nbins, 0, max_p1_time);
+  prof_pin1_boardtemp->SetStats(0);
+  
+  title = "Time profile for pin1 csp Temperature Value";
+  prof_pin1_csptemp = new TProfile("prof_pin1_csptemp", title, max_p1_time/nbins, 0, max_p1_time);
+  prof_pin1_csptemp->SetStats(0);
+  
+  title = "Histogram for pin1 ADC Value";
   h_pin1_adcval = new TH1D("h_pin1_adcval", title, 1000, 0, 2000);
 
-  title = "Time profile for pin2 ADC Value file";
-  prof_pin2_adcval = new TProfile("prof_pin2_adcval", title, t_p1/nbins, 0, t_p2);
+  title = "Time profile for pin2 ADC Value";
+  prof_pin2_adcval = new TProfile("prof_pin2_adcval", title, max_p1_time/nbins, 0, max_p2_time);
+  prof_pin2_adcval->SetStats(0);
   prof_pin2_adcval->Sumw2();
 
-  title = "Time profile for pin2 NBOF Value file";
-  h2_pin2_nbof = new TH2D("h2_pin2_nbof", title, 1000, 0, t_p2, 1000, 0, nbof_max_p2);
-
-  title = "Histogram for pin2 NTimeTrgBOF Value file";
+  title = "Time profile for pin2 NBOF Value";
+  h2_pin2_nbof = new TH2D("h2_pin2_nbof", title, 1000, 0, max_p2_time, 1000, 0, nbof_max_p2);
+  h2_pin2_nbof->SetStats(0);
+  
+  title = "Histogram for pin2 NTimeTrgBOF Value";
   h1_pin2_ntimetrgbof = new TH1D("h1_pin2_ntimetrgbof", title, 1000, 0, ntimetrgbof_max_p2);
 
-  title = "Time profile for pin2 NTimeTrgBOF Value file";
-  h2_pin2_ntimetrgbof = new TH2D("h2_pin2_ntimetrgbof", title, 2000, 0, t_p2, 1000, 0, ntimetrgbof_max_p2);
+  title = "Time profile for pin2 NTimeTrgBOF Value";
+  h2_pin2_ntimetrgbof = new TH2D("h2_pin2_ntimetrgbof", title, 2000, 0, max_p2_time, 1000, 0, ntimetrgbof_max_p2);
+  h2_pin2_ntimetrgbof->SetStats(0);
+  
+  title = "Time profile for pin2 Vbias Value";
+  prof_pin2_vbias = new TProfile("prof_pin2_vbias", title, max_p2_time/nbins, 0, max_p2_time);
 
-  title = "Time profile for pin2 Vbias Value file";
-  prof_pin2_vbias = new TProfile("prof_pin2_vbias", title, t_p2/nbins, 0, t_p2);
-
-  title = "Time profile for pin2 external Temperature Value file";
-  prof_pin2_extemp = new TProfile("prof_pin2_extemp", title, t_p2/nbins, 0, t_p2);
-
-  title = "Time profile for pin2 board Temperature Value file";
-  prof_pin2_boardtemp = new TProfile("prof_pin2_boardtemp", title, t_p2/nbins, 0, t_p2);
-
-  title = "Time profile for pin2 csp Temperature Value file";
-  prof_pin2_csptemp = new TProfile("prof_pin2_csptemp", title, t_p2/nbins, 0, t_p2);
-
-  title = "Time profile for pin ratio ADC Value file";
-  prof_pin1Dpin2_adcval = new TProfile("prof_pin1Dpin2_adcval", title, t_p2/nbins, 0, t_p2);
+  title = "Time profile for pin2 external Temperature Value";
+  prof_pin2_extemp = new TProfile("prof_pin2_extemp", title, max_p2_time/nbins, 0, max_p2_time);
+  prof_pin2_extemp->SetStats(0);
+  
+  title = "Time profile for pin2 board Temperature Value";
+  prof_pin2_boardtemp = new TProfile("prof_pin2_boardtemp", title, max_p2_time/nbins, 0, max_p2_time);
+  prof_pin2_boardtemp->SetStats(0);
+  
+  title = "Time profile for pin2 csp Temperature Value";
+  prof_pin2_csptemp = new TProfile("prof_pin2_csptemp", title, max_p2_time/nbins, 0, max_p2_time);
+  prof_pin2_csptemp->SetStats(0);
+  
+  title = "Time profile for pin ratio ADC Value";
+  prof_pin1Dpin2_adcval = new TProfile("prof_pin1Dpin2_adcval", title, max_p2_time/nbins, 0, max_p2_time);
+  prof_pin1Dpin2_adcval->SetStats(0);
   prof_pin1Dpin2_adcval->Sumw2();
 
-  title = "Pins ratio ADC Value file";
-  h1_pin1Dpin2_adcval = new TH1D("h1_pin1Dpin2_adcval", title, t_p2/nbins, 0, t_p2);
+  title = "Pins ratio ADC Value";
+  h1_pin1Dpin2_adcval = new TH1D("h1_pin1Dpin2_adcval", title, max_p2_time/nbins, 0, max_p2_time);
   h1_pin1Dpin2_adcval->Sumw2();
 
-  title = "Pin1 Vs Pin2 Correlation ADC Value file";
+  title = "Pin1 Vs Pin2 Correlation ADC Value";
   h2_pin1Vpin2_adcval = new TH2D("h2_pin1Vpin2_adcval", title, 1000, 0, 2000, 1000, 0, 2000);
   
-  title = "Histogram for pin2 ADC Value file";
+  title = "Histogram for pin2 ADC Value";
   h_pin2_adcval = new TH1D("h_pin2_adcval", title, 1000, 0, 2000);
   
   for (int j = 0; j < iter; ++j) {
@@ -255,7 +278,7 @@ void NaDaqAna::finalize(string const &filename) {
     if (p2_Fired[j]>0&&p2_adcval[j]>700&&p2_adcval[j]<780) h2_pin2_nbof->Fill(p2_time[j], p2_nbof[j]);
     //h2_pin1Vpin2_adcval->Fill(p1_adcval[j], p2_adcval[j]);
 
-    if (pmt_Fired[j]>0) h1_pmt_ntimetrgbof->Fill(pmt_ntimetrgbof[j]/10);
+    // if (pmt_Fired[j]>0) h1_pmt_ntimetrgbof->Fill(pmt_ntimetrgbof[j]/10);
     if (p1_Fired[j]>0&&p1_adcval[j]>920&&p1_adcval[j]<1020) h1_pin1_ntimetrgbof->Fill(p1_ntimetrgbof[j]/10);
     if (p2_Fired[j]>0&&p2_adcval[j]>700&&p2_adcval[j]<780) h1_pin2_ntimetrgbof->Fill(p2_ntimetrgbof[j]/10);
 
@@ -284,7 +307,7 @@ void NaDaqAna::finalize(string const &filename) {
     if (p2_Fired[j]>0&&p2_adcval[j]>700&&p2_adcval[j]<780) h_pin2_adcval->Fill(p2_adcval[j]);
   }
 
-  for (int b = 1; b <= t_p1/nbins; ++b) {
+  for (int b = 1; b <= max_p1_time/nbins; ++b) {
     
     if (prof_pin1_adcval->GetBinContent(b)!=0) {
       
@@ -329,7 +352,7 @@ void NaDaqAna::useDelete() {
   
   delete h1_pin1Dpin2_adcval;
 
-  delete h1_pmt_ntimetrgbof;
+  // delete h1_pmt_ntimetrgbof;
   delete h1_pin1_ntimetrgbof;
   delete h1_pin2_ntimetrgbof;
 
