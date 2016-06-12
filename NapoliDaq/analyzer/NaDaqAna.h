@@ -23,46 +23,6 @@ class NaDaqAna : public EventCollection {
 private:
   Long64_t nentries;
 
-  Int_t pmt_iter;
-  Int_t p1_iter;
-  Int_t p2_iter;
-
-  Double_t *pmt_Fired;
-  Double_t *p1_Fired;
-  Double_t *p2_Fired;
-
-  Double_t *pmt_adcval;
-  Double_t *p1_adcval;
-  Double_t *p2_adcval;
-
-  Double_t *pmt_nbof;
-  Double_t *p1_nbof;
-  Double_t *p2_nbof;
-
-  Double_t *pmt_ntimetrgbof;
-  Double_t *p1_ntimetrgbof;
-  Double_t *p2_ntimetrgbof;
-
-  Double_t *pmt_vbias;
-  Double_t *p1_vbias;
-  Double_t *p2_vbias;
-
-  Double_t *pmt_time;
-  Double_t *p1_time;
-  Double_t *p2_time;
-
-  Double_t *pmt_extemp;
-  Double_t *p1_extemp;
-  Double_t *p2_extemp;
-
-  Double_t *pmt_boardtemp;
-  Double_t *p1_boardtemp;
-  Double_t *p2_boardtemp;
-
-  Double_t *pmt_csptemp;
-  Double_t *p1_csptemp;
-  Double_t *p2_csptemp;
-
   Bool_t pin1_last_valid;
   Double_t pin1_adcval_last;
   Double_t pin1_time_last;
