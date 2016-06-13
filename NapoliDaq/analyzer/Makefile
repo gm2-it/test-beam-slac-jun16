@@ -1,19 +1,54 @@
-AR            = g++
-CXX           = g++ 
+#
+# Makefile with auto dependencies
+#
+
 ROOTINCS      = $(shell root-config --cflags)
 ROOTLIBS      = $(shell root-config --libs)
-CXXFLAGS      = -g -Wall -fPIC $(ROOTINCS)
 SOFLAGS       = -shared
+CPPFLAGS      += -MMD -MP -DNDEBUG -fopenmp $(ROOTINCS)
+CFLAGS        += -Wall -fPIC
+CXXFLAGS      += -Wall -fPIC
 
-all: NaDaqAnaApp
+ifdef DEBUG
+  CFLAGS        += -ggdb
+  CXXFLAGS      += -ggdb
+  LDFLAGS       += -ggdb
+endif
 
-NaDaqAnaAppObjs = NaDaqAnaApp.o NaDaqAna.o EventCollection.o
+# --- general rule for C compilation
+%.o : %.c
+	$(COMPILE.c) -o $@ $<
 
-NaDaqAnaApp: $(NaDaqAnaAppObjs)
-	$(CXX) -o $@ $(NaDaqAnaAppObjs) $(ROOTLIBS)
+# --- general rule for C++ compilation
+%.o : %.cc
+	$(COMPILE.cc) -o $@ $<
 
-%.o: %.cc
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+#
+# define executables and source files
+#
+
+EXECUTABLES += NaDaqAnaApp
+CXXSOURCES += NaDaqAnaApp.cc NaDaqAna.cc EventCollection.cc
+
+NaDaqAnaApp: NaDaqAnaApp.o NaDaqAna.o EventCollection.o
+	$(LINK.cc) -o $@ $^ $(ROOTLIBS)
+
+#
+# global targets
+#
+
+.PHONY: all
+all: $(EXECUTABLES)
 
 clean:
-	/bin/rm -f *.o $(APPNAME) *~
+	$(RM) -f *.o *.d
+	$(RM) -f $(EXECUTABLES)
+
+#
+# automatic dependencies
+#
+
+ifeq "$(MAKECMDGOALS)" ""
+  -include $(CXXSOURCES:.cc=.d)
+  -include $(CSOURCES:.cc=.d)
+endif
