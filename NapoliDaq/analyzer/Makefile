@@ -50,5 +50,5 @@ clean:
 
 ifeq "$(MAKECMDGOALS)" ""
   -include $(CXXSOURCES:.cc=.d)
-  -include $(CSOURCES:.cc=.d)
+  -include $(CSOURCES:.c=.d)
 endif
