@@ -1,0 +1,17 @@
+Based on framework powered by Kim Siang Khaw (UW)
+(https://github.com/kimsiang/SLAC2016) and classes based on code of
+Stefano Mastroianni. Also thanks to Anna Driutti
+
+compilation
+
+> make clean; make
+
+Insert the root file (currently gm2uw_run01865_analysis.root) that you
+want to analyze into the input.script file and analyze the file by
+running
+
+./ana input.script
+
+Variables that can be accessed from the root file are defined in
+RiderNtuple.h. You can add your analysis codes to the file
+SLAC2016Ana.C and SLAC2016Ana.h.
