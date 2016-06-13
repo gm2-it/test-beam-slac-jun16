@@ -141,7 +141,7 @@ void NaDaqAna::initialize(string const &filename) {
   prof_pin2_extemp = new_tprofile("prof_pin2_extemp", title, 1000, "[days of June 2016]", "");
 
   title = "Pin2 board Temperature vs. time";
-  prof_pin2_boardtemp = new_tprofile("prof_pin2_boardtemp", title, 1000, "", "");
+  prof_pin2_boardtemp = new_tprofile("prof_pin2_boardtemp", title, 1000, "[days of June 2016]", "");
 
   title = "Pin2 preamp Temperature vs. time";
   prof_pin2_csptemp = new_tprofile("prof_pin2_csptemp", title, 1000, "[days of June 2016]", "");
@@ -173,9 +173,9 @@ void NaDaqAna::execute() {
     h2_pmt_nbof->Fill(pmt_time, pmt_NBOF);
     h1_pmt_ntimetrgbof->Fill(pmt_NTimeTrgBOF);
     h2_pmt_ntimetrgbof->Fill(pmt_time, pmt_NTimeTrgBOF);
-    prof_pmt_extemp->Fill(pmt_time, pmt_extTemp*200./2047.-50.);
-    prof_pmt_boardtemp->Fill(pmt_time, pmt_boardTemp*200./2047.-50.);
-    prof_pmt_csptemp->Fill(pmt_time, pmt_cspTemp);
+    prof_pmt_extemp->Fill(pmt_time, pmt_extTemp*200./2047. -50.);
+    prof_pmt_boardtemp->Fill(pmt_time, pmt_boardTemp*200./2047. -50.);
+    prof_pmt_csptemp->Fill(pmt_time, pmt_cspTemp*200./2047. -50.);
     // was pmt_vbias[j]*0.437/pmt_vbias_mean
     prof_pmt_vbias->Fill(pmt_time, pmt_Vbias);
     h1_pmt_adcval->Fill(pmt_ADCVal);
@@ -188,9 +188,9 @@ void NaDaqAna::execute() {
     h2_pin1_nbof->Fill(pin1_time, pin1_NBOF);
     h1_pin1_ntimetrgbof->Fill(pin1_NTimeTrgBOF);
     h2_pin1_ntimetrgbof->Fill(pin1_time, pin1_NTimeTrgBOF);
-    prof_pin1_extemp->Fill(pin1_time, pin1_extTemp*200./2047.-50.);
-    prof_pin1_boardtemp->Fill(pin1_time, pin1_boardTemp*200./2047.-50.);
-    prof_pin1_csptemp->Fill(pin1_time, pin1_cspTemp);
+    prof_pin1_extemp->Fill(pin1_time, pin1_extTemp*200./2047. -50.);
+    prof_pin1_boardtemp->Fill(pin1_time, pin1_boardTemp*200./2047. -50.);
+    prof_pin1_csptemp->Fill(pin1_time, pin1_cspTemp*200./2047. -50.);
     // was p1_vbias[j]*(-30.)/p1_vbias_mean
     prof_pin1_vbias->Fill(pin1_time, pin1_Vbias);
     h1_pin1_adcval->Fill(pin1_ADCVal);
@@ -207,9 +207,9 @@ void NaDaqAna::execute() {
     h2_pin2_nbof->Fill(pin2_time, pin2_NBOF);
     h1_pin2_ntimetrgbof->Fill(pin2_NTimeTrgBOF);
     h2_pin2_ntimetrgbof->Fill(pin2_time, pin2_NTimeTrgBOF);
-    prof_pin2_extemp->Fill(pin2_time, pin2_extTemp*200./2047.-50.);
-    prof_pin2_boardtemp->Fill(pin2_time, pin2_boardTemp*200./2047.-50.);
-    prof_pin2_csptemp->Fill(pin2_time, pin2_cspTemp);
+    prof_pin2_extemp->Fill(pin2_time, pin2_extTemp*200./2047. -50.);
+    prof_pin2_boardtemp->Fill(pin2_time, pin2_boardTemp*200./2047. -50.);
+    prof_pin2_csptemp->Fill(pin2_time, pin2_cspTemp*200./2047. -50.);
     // was p1_vbias[j]*(-30.)/p1_vbias_mean
     prof_pin2_vbias->Fill(pin2_time, pin2_Vbias);
     h1_pin2_adcval->Fill(pin2_ADCVal);
