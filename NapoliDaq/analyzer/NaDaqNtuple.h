@@ -1,28 +1,25 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Sat Jun  4 06:59:20 2016 by ROOT version 6.06/04
+// Mon Jun 13 04:45:56 2016 by ROOT version 5.34/36
 // from TTree ntMonFrame/MonitorFrame
-// found on file: Run30_20166133334.000.root
+// found on file: ../Run_last/Run41_20160610173537.000.root
 //////////////////////////////////////////////////////////
 
-#ifndef EventCollection_h
-#define EventCollection_h
+#ifndef NaDaqNtuple_h
+#define NaDaqNtuple_h
 
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
 
-// Namespace
-using namespace std;
-
 // Header file for the classes stored in the TTree if any.
 
-class EventCollection {
+// Fixed size dimensions of array or collections stored in the TTree if any.
+
+class NaDaqNtuple {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
-
-// Fixed size dimensions of array or collections stored in the TTree if any.
 
    // Declaration of leaf types
    Int_t           pmt_NBOF;
@@ -76,8 +73,8 @@ public :
    TBranch        *b_pin1;   //!
    TBranch        *b_pin2;   //!
 
-   EventCollection(TTree *tree=0);
-   virtual ~EventCollection();
+   NaDaqNtuple(TTree *tree=0);
+   virtual ~NaDaqNtuple();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
@@ -89,35 +86,25 @@ public :
 
 #endif
 
-#ifdef EventCollection_cxx
-EventCollection::EventCollection(TTree *tree) : fChain(0) 
+#ifdef NaDaqNtuple_cxx
+NaDaqNtuple::NaDaqNtuple(TTree *tree) : fChain(0) 
 {
-// if parameter tree is not specified (or zero), connect the file
-// used to generate this class and read the Tree.
-   if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("Run30_20166133334.000.root");
-      if (!f || !f->IsOpen()) {
-         f = new TFile("Run30_20166133334.000.root");
-      }
-      f->GetObject("ntMonFrame",tree);
-
-   }
    Init(tree);
 }
 
-EventCollection::~EventCollection()
+NaDaqNtuple::~NaDaqNtuple()
 {
    if (!fChain) return;
    delete fChain->GetCurrentFile();
 }
 
-Int_t EventCollection::GetEntry(Long64_t entry)
+Int_t NaDaqNtuple::GetEntry(Long64_t entry)
 {
 // Read contents of entry.
    if (!fChain) return 0;
    return fChain->GetEntry(entry);
 }
-Long64_t EventCollection::LoadTree(Long64_t entry)
+Long64_t NaDaqNtuple::LoadTree(Long64_t entry)
 {
 // Set the environment to read one entry
    if (!fChain) return -5;
@@ -130,7 +117,7 @@ Long64_t EventCollection::LoadTree(Long64_t entry)
    return centry;
 }
 
-void EventCollection::Init(TTree *tree)
+void NaDaqNtuple::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -152,7 +139,7 @@ void EventCollection::Init(TTree *tree)
    Notify();
 }
 
-Bool_t EventCollection::Notify()
+Bool_t NaDaqNtuple::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be either for a new TTree in a TChain or when when a new TTree
@@ -163,18 +150,18 @@ Bool_t EventCollection::Notify()
    return kTRUE;
 }
 
-void EventCollection::Show(Long64_t entry)
+void NaDaqNtuple::Show(Long64_t entry)
 {
 // Print contents of entry.
 // If entry is not specified, print current entry
    if (!fChain) return;
    fChain->Show(entry);
 }
-Int_t EventCollection::Cut(Long64_t entry)
+Int_t NaDaqNtuple::Cut(Long64_t entry)
 {
 // This function may be called from Loop.
 // returns  1 if entry is accepted.
 // returns -1 otherwise.
    return 1;
 }
-#endif // #ifdef EventCollection_cxx
+#endif // #ifdef NaDaqNtuple_cxx

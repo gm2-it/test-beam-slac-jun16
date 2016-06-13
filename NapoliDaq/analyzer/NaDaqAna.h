@@ -1,18 +1,23 @@
 #ifndef NaDaqAna_h
 #define NaDaqAna_h
 
-#include "EventCollection.h"
+#include "NaDaqNtuple.h"
+
 #include <stdio.h>
 #include <TH1D.h>
 #include <TH2D.h>
 #include <TGraph.h>
 #include <TProfile.h>
+
 #include <iostream>
 #include <fstream>
+#include <string>
 
-class NaDaqAna : public EventCollection {
+using namespace std;
+
+class NaDaqAna : public NaDaqNtuple {
  public:
-  NaDaqAna(TTree *tree=0):EventCollection(tree){};
+  NaDaqAna(TTree *tree=0):NaDaqNtuple(tree){};
   ~NaDaqAna() {};
   virtual void Loop(string const &filename);
   void initialize(string const &filename);

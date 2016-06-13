@@ -6,6 +6,8 @@
 #include <TCanvas.h>
 #include <cstdlib>
 
+using namespace std;
+
 int main (int argc, char **argv) {
   
   TChain *chain = new TChain ("ntMonFrame");

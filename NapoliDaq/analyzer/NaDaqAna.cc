@@ -1,10 +1,9 @@
 #include "NaDaqAna.h"
+
 #include <TMath.h>
 #include <TF1.h>
 #include <TF2.h>
 #include <TCanvas.h>
-
-#include <iostream>
 
 void NaDaqAna::Loop(string const &filename) {
   cout << "Loop()" << endl;

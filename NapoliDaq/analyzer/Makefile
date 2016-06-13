@@ -28,9 +28,9 @@ endif
 #
 
 EXECUTABLES += NaDaqAnaApp
-CXXSOURCES += NaDaqAnaApp.cc NaDaqAna.cc EventCollection.cc
+CXXSOURCES += NaDaqAnaApp.cc NaDaqAna.cc NaDaqNtuple.cc
 
-NaDaqAnaApp: NaDaqAnaApp.o NaDaqAna.o EventCollection.o
+NaDaqAnaApp: NaDaqAnaApp.o NaDaqAna.o NaDaqNtuple.o
 	$(LINK.cc) -o $@ $^ $(ROOTLIBS)
 
 #

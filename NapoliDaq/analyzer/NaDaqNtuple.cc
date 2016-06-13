@@ -1,18 +1,18 @@
-#define EventCollection_cxx
-#include "EventCollection.h"
+#define NaDaqNtuple_cxx
+#include "NaDaqNtuple.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
 
-void EventCollection::Loop()
+void NaDaqNtuple::Loop()
 {
 //   In a ROOT session, you can do:
-//      root> .L EventCollection.C
-//      root> EventCollection t
-//      root> t.GetEntry(12); // Fill t data members with entry number 12
-//      root> t.Show();       // Show values of entry 12
-//      root> t.Show(16);     // Read and show values of entry 16
-//      root> t.Loop();       // Loop on all entries
+//      Root > .L NaDaqNtuple.C
+//      Root > NaDaqNtuple t
+//      Root > t.GetEntry(12); // Fill t data members with entry number 12
+//      Root > t.Show();       // Show values of entry 12
+//      Root > t.Show(16);     // Read and show values of entry 16
+//      Root > t.Loop();       // Loop on all entries
 //
 
 //     This is the loop skeleton where:
