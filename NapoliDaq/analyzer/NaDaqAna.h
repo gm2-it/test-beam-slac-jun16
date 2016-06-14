@@ -28,9 +28,18 @@ class NaDaqAna : public NaDaqNtuple {
 private:
   Long64_t nentries;
 
+  Bool_t pmt_ls_last_valid;
+  Double_t pmt_ls_adcval_last;
+  Double_t pmt_ls_time_last;
+
+  Bool_t pmt_am_last_valid;
+  Double_t pmt_am_adcval_last;
+  Double_t pmt_am_time_last;
+
   Bool_t pin1_last_valid;
   Double_t pin1_adcval_last;
   Double_t pin1_time_last;
+
   Bool_t pin2_last_valid;
   Double_t pin2_adcval_last;
   Double_t pin2_time_last;
@@ -38,6 +47,7 @@ private:
   // histograms for analysis
   TProfile *prof_pmt_ls_adcval;
   TProfile *prof_pmt_am_adcval;
+  TProfile *prof_pmt_ls_am_ratio;
   TProfile *prof_pin1_adcval;
   TProfile *prof_pin2_adcval;
   TProfile *prof_ratio_pin1_pin2_adcval;
