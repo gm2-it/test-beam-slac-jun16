@@ -65,6 +65,9 @@ void NaDaqAna::initialize(string const &filename) {
   title = "Am PMT value vs. time";
   prof_pmt_am_adcval = new_tprofile("prof_pmt_am_adcval", title, 1000, "[days of June 2016]", "");
 
+  title = "Laser / Am ratio vs. time";
+  prof_pmt_ls_am_ratio = new_tprofile("prof_pmt_ls_am_ratio", title, 1000, "[days of June 2016]", "");
+
   title = "PMT Value";
   h1_pmt_adcval = new_TH1D("h1_pmt_adcval", title, 400, "", "");
 
@@ -158,6 +161,9 @@ void NaDaqAna::initialize(string const &filename) {
   pin1_last_valid = false;
   pin2_last_valid = false;
 
+  pmt_ls_last_valid = false;
+  pmt_am_last_valid = false;
+
   cout << "initialize()" << endl;
 }
 
@@ -166,9 +172,24 @@ void NaDaqAna::execute() {
   if (pmt_fired==1) {
     Double_t pmt_time(pmt_t_day + Double_t(pmt_t_secday)/(60*60*24));
 
-    if (pmt_ADCVal>5300 && pmt_ADCVal<10000) prof_pmt_ls_adcval->Fill(pmt_time, pmt_ADCVal);
-    if (pmt_ADCVal>3000 && pmt_ADCVal<5300)  prof_pmt_am_adcval->Fill(pmt_time, pmt_ADCVal);
-
+    if (pmt_ADCVal>5300 && pmt_ADCVal<10000) {
+      prof_pmt_ls_adcval->Fill(pmt_time, pmt_ADCVal);
+      pmt_ls_last_valid = true;
+      pmt_ls_adcval_last = pmt_ADCVal;
+      pmt_ls_time_last = pmt_time;
+    }
+    if (pmt_ADCVal>3000 && pmt_ADCVal<5300) {
+      prof_pmt_am_adcval->Fill(pmt_time, pmt_ADCVal);
+      pmt_am_last_valid = true;
+      pmt_am_adcval_last = pmt_ADCVal;
+      pmt_am_time_last = pmt_time;
+    }
+    if (pmt_ls_last_valid && pmt_am_last_valid) {
+      prof_pmt_ls_am_ratio->Fill((pmt_ls_time_last+pmt_am_time_last)/2, pmt_ls_adcval_last/pmt_am_adcval_last);
+      pmt_ls_last_valid = false;
+      pmt_am_last_valid = false;
+    }
+    
     h2_pmt_nbof->Fill(pmt_time, pmt_NBOF);
     h1_pmt_ntimetrgbof->Fill(pmt_NTimeTrgBOF);
     h2_pmt_ntimetrgbof->Fill(pmt_time, pmt_NTimeTrgBOF);
@@ -219,9 +240,9 @@ void NaDaqAna::execute() {
   }
 
   if (pin1_last_valid && pin2_last_valid) {
-    prof_ratio_pin1_pin2_adcval-> Fill( (pin1_time_last+pin2_time_last)/2, pin1_adcval_last/pin2_adcval_last);
-    h1_ratio_pin1_pin2_adcval-> Fill( pin1_adcval_last/pin2_adcval_last);
-    h2_pin1_vs_pin2_adcval-> Fill( pin1_adcval_last, pin2_adcval_last);
+    prof_ratio_pin1_pin2_adcval->Fill( (pin1_time_last+pin2_time_last)/2, pin1_adcval_last/pin2_adcval_last);
+    h1_ratio_pin1_pin2_adcval->Fill( pin1_adcval_last/pin2_adcval_last);
+    h2_pin1_vs_pin2_adcval->Fill( pin1_adcval_last, pin2_adcval_last);
     pin1_last_valid = false;
     pin2_last_valid = false;
   }
@@ -248,6 +269,7 @@ void NaDaqAna::finalize(string const &filename) {
 void NaDaqAna::useDelete() {
   delete prof_pmt_ls_adcval;
   delete prof_pmt_am_adcval;
+  delete prof_pmt_ls_am_ratio;
   delete prof_pin1_adcval;
   delete prof_pin2_adcval;
 
