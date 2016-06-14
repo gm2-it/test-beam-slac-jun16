@@ -1,0 +1,22 @@
+Rider analysis SW
+
+git clone https://github.com/gm2-it/test-beam-slac-jun16.git
+cd test-beam-slac-jun16/Riders/finalizer
+make clean
+make
+# produce plots using .root files produced with cruncher
+./RiderAnaApp <file1.root> [<file2>.root ...]
+
+based on
+
+- framework by Kim Siang Khaw (UW)
+  https://github.com/kimsiang/SLAC2016
+
+- classes by Stefano Mastroianni
+
+- work by Antonio Gioiosa
+  https://github.com/agioiosa/test-beam-slac-2016
+
+- thanks also to Anna Driutti
+
+- work by Alberto Lusiani
