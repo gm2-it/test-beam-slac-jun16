@@ -2,12 +2,17 @@
 # Makefile with auto dependencies
 #
 
-ROOTINCS      = $(shell root-config --cflags)
-ROOTLIBS      = $(shell root-config --libs)
-SOFLAGS       = -shared
-CPPFLAGS      += -MMD -MP -DNDEBUG -fopenmp $(ROOTINCS)
-CFLAGS        += -Wall -fPIC
-CXXFLAGS      += -Wall -fPIC
+# --- setup automatic dependencies
+DEPDIR 	      := .
+$(shell mkdir -p $(DEPDIR) >/dev/null)
+DEPFLAGS      = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.d.tmp
+
+ROOTINCS      := $(shell root-config --cflags)
+ROOTLIBS      := $(shell root-config --libs)
+
+CFLAGS        += -Wall -fPIC -fopenmp -DNDEBUG $(ROOTINCS)
+CXXFLAGS      += -Wall -fPIC -fopenmp -DNDEBUG $(ROOTINCS)
+SOFLAGS       := -shared
 
 ifdef DEBUG
   CFLAGS        += -ggdb
@@ -15,13 +20,27 @@ ifdef DEBUG
   LDFLAGS       += -ggdb
 endif
 
+# --- add dependency generation on compilation
+COMPILE.c += $(DEPFLAGS)
+COMPILE.cc += $(DEPFLAGS)
+# --- produce .d files only if compilation was successful
+COMPILE.dep = mv -f $(DEPDIR)/$*.d.tmp $(DEPDIR)/$*.d
+
 # --- general rule for C compilation
 %.o : %.c
+%.o : %.c $(DEPDIR)/%.d
 	$(COMPILE.c) -o $@ $<
+	$(COMPILE.dep)
 
 # --- general rule for C++ compilation
 %.o : %.cc
+%.o : %.cc $(DEPDIR)/%.d
 	$(COMPILE.cc) -o $@ $<
+	$(COMPILE.dep)
+
+# --- prevent failure if a dependency file does not exist
+$(DEPDIR)/%.d: ;
+.PRECIOUS: $(DEPDIR)/%.d
 
 #
 # define executables and source files
@@ -41,14 +60,13 @@ RiderAnaApp: RiderAnaApp.o RiderAna.o RiderNtuple.o
 all: $(EXECUTABLES)
 
 clean:
-	$(RM) -f *.o *.d
-	$(RM) -f $(EXECUTABLES)
+	$(RM) $(EXECUTABLES) *.o *.d *.d.tmp
 
 #
 # automatic dependencies
 #
 
+# --- if statement prevents non required dependency generation on make clean
 ifeq "$(MAKECMDGOALS)" ""
-  -include $(CXXSOURCES:.cc=.d)
-  -include $(CSOURCES:.c=.d)
+  -include $(patsubst %, $(DEPDIR)/%.d, $(basename $(CSOURCES) $(CXXSOURCES)))
 endif

@@ -10,14 +10,16 @@
 #include <iostream>
 #include <fstream>
 
+using namespace std;
+
 class RiderAna : public RiderNtuple {
  public:
   RiderAna(TTree *tree=0):RiderNtuple(tree){};
   ~RiderAna() {};
-  virtual void Loop(string &filename);
-  void initialize(string &filename);
+  virtual void Loop(string const &filename);
+  void initialize(string const &filename);
   void execute();
-  void finalize(string &filename);
+  void finalize(string const &filename);
   void useDelete();
   void clear();
 

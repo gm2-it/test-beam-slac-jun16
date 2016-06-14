@@ -12,9 +12,6 @@
 #include <TChain.h>
 #include <TFile.h>
 
-// Header file for the classes stored in the TTree if any.
-using namespace std;
-
 class RiderNtuple {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain

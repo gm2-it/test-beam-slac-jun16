@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-void RiderAna::Loop(string &filename){
+void RiderAna::Loop(string const &filename){
     cout << "Loop()" << endl;
 
     //initialize(filename);
@@ -30,7 +30,7 @@ void RiderAna::Loop(string &filename){
     finalize(filename);
 }
 
-void RiderAna::initialize(string &filename){
+void RiderAna::initialize(string const &filename){
  	iter = 0;
  	aFC7_clockcounter = new Double_t[nentries];
 
@@ -53,7 +53,7 @@ void RiderAna::execute(){
 	//cout << "execute()" << endl;
 }
 
-void RiderAna::finalize(string &filename){
+void RiderAna::finalize(string const &filename){
 	//histograms for LM analysis
 	Int_t nbins = 10;
 	Double_t time = aFC7_clockcounter[iter-1] - aFC7_clockcounter[0];

@@ -1,17 +1,22 @@
-Based on framework powered by Kim Siang Khaw (UW)
-(https://github.com/kimsiang/SLAC2016) and classes based on code of
-Stefano Mastroianni. Also thanks to Anna Driutti
+Rider analysis SW
 
-compilation
+git clone https://github.com/gm2-it/test-beam-slac-jun16.git
+cd test-beam-slac-jun16/Riders/finalizer
+make clean
+make
+# produce plots using .root files produced with cruncher
+./RiderAnaApp <file1.root> [<file2>.root ...]
 
-> make clean; make
+based on
 
-Insert the root file (currently gm2uw_run01865_analysis.root) that you
-want to analyze into the input.script file and analyze the file by
-running
+- framework by Kim Siang Khaw (UW)
+  https://github.com/kimsiang/SLAC2016
 
-./ana input.script
+- classes by Stefano Mastroianni
 
-Variables that can be accessed from the root file are defined in
-RiderNtuple.h. You can add your analysis codes to the file
-SLAC2016Ana.C and SLAC2016Ana.h.
+- work by Antonio Gioiosa
+  https://github.com/agioiosa/test-beam-slac-2016
+
+- thanks also to Anna Driutti
+
+- work by Alberto Lusiani
