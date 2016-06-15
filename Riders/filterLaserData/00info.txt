@@ -4,11 +4,13 @@ this code is obsolete and wrong, Kim SW is evolging and he will
 provide soon a new example framework for the analysis
 
 git clone https://github.com/gm2-it/test-beam-slac-jun16.git
-cd test-beam-slac-jun16/Riders/finalizer
+cd test-beam-slac-jun16/Riders/filterLaserData/
 make clean
 make
-# produce plots using .root files produced with cruncher
 ./RiderAnaApp <file1.root> [<file2>.root ...]
+
+this will read the slac test beam data and produce a reduced ntuple
+with just the laser data read by the Riders
 
 based on
 
