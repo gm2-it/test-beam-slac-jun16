@@ -1,8 +1,9 @@
 //////////////////////////////////////////////////////////
-// This class has been automatically generated on
-// Tue Jun  7 11:26:32 2016 by ROOT version 5.34/36
+// slightly modificed from class
+// automatically generated on
+// Wed Jun 15 03:08:03 2016 by ROOT version 5.34/36
 // from TTree eventTree/Tree of Events
-// found on file: /media/RIPRISTINO/gm2slac_run02181.root
+// found on file: data/gm2slac_run02999.root
 //////////////////////////////////////////////////////////
 
 #ifndef EventCollection_h
@@ -14,12 +15,10 @@
 
 // Header file for the classes stored in the TTree if any.
 #include <vector>
-#include <vector>
-#include <vector>
-
-// Fixed size dimensions of array or collections stored in the TTree if any.
 
 using namespace std;
+
+// Fixed size dimensions of array or collections stored in the TTree if any.
 
 class EventCollection {
 public :
@@ -58,14 +57,19 @@ public :
    vector<unsigned int> *XtalHit_EventNum;
    vector<unsigned int> *XtalHit_CaloNum;
    vector<unsigned int> *XtalHit_XtalNum;
+   vector<unsigned int> *XtalHit_UtcaSlotNum;
+   vector<unsigned int> *XtalHit_ChannelNum;
    vector<unsigned int> *XtalHit_IslandNum;
    vector<double>  *XtalHit_Energy;
    vector<double>  *XtalHit_Time;
+   vector<double>  *XtalHit_ClockCounter;
    vector<unsigned int> *Cluster_EventNum;
    vector<unsigned int> *Cluster_CaloNum;
    vector<unsigned int> *Cluster_IslandNum;
    vector<double>  *Cluster_Energy;
    vector<double>  *Cluster_Time;
+   vector<double>  *Cluster_X;
+   vector<double>  *Cluster_Y;
 
    // List of branches
    TBranch        *b_RunNum;   //!
@@ -99,14 +103,19 @@ public :
    TBranch        *b_XtalHit_EventNum;   //!
    TBranch        *b_XtalHit_CaloNum;   //!
    TBranch        *b_XtalHit_XtalNum;   //!
+   TBranch        *b_XtalHit_UtcaSlotNum;   //!
+   TBranch        *b_XtalHit_ChannelNum;   //!
    TBranch        *b_XtalHit_IslandNum;   //!
    TBranch        *b_XtalHit_Energy;   //!
    TBranch        *b_XtalHit_Time;   //!
+   TBranch        *b_XtalHit_ClockCounter;   //!
    TBranch        *b_Cluster_EventNum;   //!
    TBranch        *b_Cluster_CaloNum;   //!
    TBranch        *b_Cluster_IslandNum;   //!
    TBranch        *b_Cluster_Energy;   //!
    TBranch        *b_Cluster_Time;   //!
+   TBranch        *b_Cluster_X;   //!
+   TBranch        *b_Cluster_Y;   //!
 
    EventCollection(TTree *tree=0);
    virtual ~EventCollection();
@@ -124,17 +133,6 @@ public :
 #ifdef EventCollection_cxx
 EventCollection::EventCollection(TTree *tree) : fChain(0) 
 {
-// if parameter tree is not specified (or zero), connect the file
-// used to generate this class and read the Tree.
-   if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/media/RIPRISTINO/gm2slac_run02181.root");
-      if (!f || !f->IsOpen()) {
-         f = new TFile("/media/RIPRISTINO/gm2slac_run02181.root");
-      }
-      TDirectory * dir = (TDirectory*)f->Get("/media/RIPRISTINO/gm2slac_run02181.root:/slacAnalyzer");
-      dir->GetObject("eventTree",tree);
-
-   }
    Init(tree);
 }
 
@@ -203,14 +201,19 @@ void EventCollection::Init(TTree *tree)
    XtalHit_EventNum = 0;
    XtalHit_CaloNum = 0;
    XtalHit_XtalNum = 0;
+   XtalHit_UtcaSlotNum = 0;
+   XtalHit_ChannelNum = 0;
    XtalHit_IslandNum = 0;
    XtalHit_Energy = 0;
    XtalHit_Time = 0;
+   XtalHit_ClockCounter = 0;
    Cluster_EventNum = 0;
    Cluster_CaloNum = 0;
    Cluster_IslandNum = 0;
    Cluster_Energy = 0;
    Cluster_Time = 0;
+   Cluster_X = 0;
+   Cluster_Y = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -248,14 +251,19 @@ void EventCollection::Init(TTree *tree)
    fChain->SetBranchAddress("XtalHit_EventNum", &XtalHit_EventNum, &b_XtalHit_EventNum);
    fChain->SetBranchAddress("XtalHit_CaloNum", &XtalHit_CaloNum, &b_XtalHit_CaloNum);
    fChain->SetBranchAddress("XtalHit_XtalNum", &XtalHit_XtalNum, &b_XtalHit_XtalNum);
+   fChain->SetBranchAddress("XtalHit_UtcaSlotNum", &XtalHit_UtcaSlotNum, &b_XtalHit_UtcaSlotNum);
+   fChain->SetBranchAddress("XtalHit_ChannelNum", &XtalHit_ChannelNum, &b_XtalHit_ChannelNum);
    fChain->SetBranchAddress("XtalHit_IslandNum", &XtalHit_IslandNum, &b_XtalHit_IslandNum);
    fChain->SetBranchAddress("XtalHit_Energy", &XtalHit_Energy, &b_XtalHit_Energy);
    fChain->SetBranchAddress("XtalHit_Time", &XtalHit_Time, &b_XtalHit_Time);
+   fChain->SetBranchAddress("XtalHit_ClockCounter", &XtalHit_ClockCounter, &b_XtalHit_ClockCounter);
    fChain->SetBranchAddress("Cluster_EventNum", &Cluster_EventNum, &b_Cluster_EventNum);
    fChain->SetBranchAddress("Cluster_CaloNum", &Cluster_CaloNum, &b_Cluster_CaloNum);
    fChain->SetBranchAddress("Cluster_IslandNum", &Cluster_IslandNum, &b_Cluster_IslandNum);
    fChain->SetBranchAddress("Cluster_Energy", &Cluster_Energy, &b_Cluster_Energy);
    fChain->SetBranchAddress("Cluster_Time", &Cluster_Time, &b_Cluster_Time);
+   fChain->SetBranchAddress("Cluster_X", &Cluster_X, &b_Cluster_X);
+   fChain->SetBranchAddress("Cluster_Y", &Cluster_Y, &b_Cluster_Y);
    Notify();
 }
 

@@ -17,7 +17,7 @@ int main (int argc, char **argv) {
   
   RiderAna *ana = new RiderAna(chain);
   
-  ana->Loop("RiderPlots.root");
+  ana->Loop("RidersLaserData.root");
   
   return 0;
 }
