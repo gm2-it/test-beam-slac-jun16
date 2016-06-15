@@ -1,3 +1,9 @@
+//
+// the logic of this code is bad, it stores all data in arrays and then makes
+// plots with the correct limits
+// should be changed to produce Root auto-ranging histograms
+//
+
 #include "RiderAna.h"
 #include <TMath.h>
 #include <TF1.h>
